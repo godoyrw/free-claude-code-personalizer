@@ -16,35 +16,35 @@ O instalador permite que você:
 
 ## 📁 Estrutura do Projeto
 
-```
-├── langs/                 # Arquivos de idioma (JavaScript) – **ignorados pelo .gitignore**
-│   ├── static/            # Contém os idiomas reais
-│   │   ├── default/       # Idioma padrão (inglês)
-│   │   └── pt-br/         # Português do Brasil
-│   └── dynamic/           # (outro propósito)
-├── service/               # Arquivos de serviço e aliases
-│   ├── fcc.service        # Arquivo de serviço systemd
-│   └── fcc.aliases.sh     # Aliases de comando para gerenciamento
-├── themes/                # Arquivos de tema (CSS)
-│   ├── default/           # Tema padrão
-│   ├── god-purple/        # Tema roxo e preto (mostrado nas screenshots)
-│   ├── campbell/          # Tema Campbell
-│   ├── dracula/           # Tema Dracula
-│   ├── gnome/             # Tema GNOME
-│   ├── high-contrast/     # Tema alto contraste
-│   ├── horizon/           # Tema Horizon
-│   ├── linux/             # Tema Linux
-│   ├── nord/              # Tema Nord
-│   ├── solarized/         # Tema Solarized
-│   ├── tango/             # Tema Tango
-│   ├── ubuntu/            # Tema Ubuntu
-│   ├── vs-code/           # Tema VS Code
-│   ├── xterm/             # Tema XTerm
-│   └── ...                # Mais temas disponíveis
-├── install_fcc-personalizer.sh   # Script de instalação interativo
-├── uninstall_fcc-personalizer.sh # Script de desinstalação
-├── .gitignore             # Arquivo de ignorar do Git (ignora langs/, backups, etc.)
-└── README.md              # Este arquivo
+```            
+├── langs/                             # Arquivos de idioma - Estaticos e Dinâmicos
+│   ├── static/                        # Contém os idiomas reais
+│   │   ├── default/                   # Idioma padrão (inglês)
+│   │   └── pt-br/                     # Português do Brasil
+│   └── dynamic/                       # Idiomas em Runtime
+├── service/                           # Arquivos de serviço e aliases
+│   ├── fcc.service                    # Arquivo de serviço systemd
+│   └── fcc.aliases.sh                 # Aliases de comando para gerenciamento
+├── themes/                            # Arquivos de tema (CSS)
+│   ├── default/                       # Tema padrão
+│   ├── god-purple/                    # Tema roxo e preto (mostrado nas screenshots)
+│   ├── campbell/                      # Tema Campbell
+│   ├── dracula/                       # Tema Dracula
+│   ├── gnome/                         # Tema GNOME
+│   ├── high-contrast/                 # Tema alto contraste
+│   ├── horizon/                       # Tema Horizon
+│   ├── linux/                         # Tema Linux
+│   ├── nord/                          # Tema Nord
+│   ├── solarized/                     # Tema Solarized
+│   ├── tango/                         # Tema Tango
+│   ├── ubuntu/                        # Tema Ubuntu
+│   ├── vs-code/                       # Tema VS Code
+│   ├── xterm/                         # Tema XTerm
+│   └── ...                            # Mais temas disponíveis
+├── install_fcc-personalizer.sh        # Script de instalação interativo
+├── uninstall_fcc-personalizer.sh      # Script de desinstalação
+├── .gitignore                         # Arquivo de ignorar do Git (ignora langs/, backups, etc.)
+└── README.md                          # Este arquivo
 ```
 
 ## 🚀 Como Usar
