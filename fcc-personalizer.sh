@@ -1,29 +1,30 @@
 #!/bin/bash
+
 # fcc-personalizer.sh
-# Instala tema, systemd template e aliases para Free Claude Code
+# Instala tema, idioma, systemd template e aliases para Free Claude Code
 
 set -euo pipefail
 
 # ------------------- CONFIGURAÇÕES -------------------
+
 DEST_DIR="/home/godoy/.local/share/uv/tools/free-claude-code/lib/python3.14/site-packages/api/admin_static"
 SERVICE_DIR="/etc/systemd/system"
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
 SERVICE_NAME="fcc@.service"
 SERVICE_PATH="$SERVICE_DIR/$SERVICE_NAME"
 SOURCE_SERVICE="$PROJECT_DIR/service/$SERVICE_NAME"
-
 ALIASES_FILE="$PROJECT_DIR/service/fcc.aliases.sh"
 BASHRC="$HOME/.bashrc"
 
 # ------------------- FUNÇÕES -------------------
+
 error() {
     echo "❌ Erro: $*" >&2
     exit 1
 }
 
 warning() {
-    echo "⚠️  $*"
+    echo "⚠️ $*"
 }
 
 success() {
@@ -31,24 +32,22 @@ success() {
 }
 
 # ------------------- UNINSTALL -------------------
+
 if [[ "${1:-}" == "--uninstall" ]]; then
-    echo "🗑️  Removendo FCC Personalizer..."
+    echo "🗑️ Removendo FCC Personalizer..."
 
     TARGET_USER="${SUDO_USER:-$USER}"
 
     echo "🧹 Limpando instância systemd..."
 
-    # parar qualquer instância ativa
     sudo systemctl stop "fcc@$TARGET_USER" 2>/dev/null || true
     sudo systemctl disable "fcc@$TARGET_USER" 2>/dev/null || true
 
-    # remover template principal
     if [[ -f "/etc/systemd/system/fcc@.service" ]]; then
         sudo rm -f /etc/systemd/system/fcc@.service
         success "Template systemd removido"
     fi
 
-    # remover overrides (importante!)
     if [[ -d "/etc/systemd/system/fcc@.service.d" ]]; then
         sudo rm -rf /etc/systemd/system/fcc@.service.d
         success "Overrides systemd removidos"
@@ -68,9 +67,8 @@ if [[ "${1:-}" == "--uninstall" ]]; then
         success "Aliases system-wide removidos"
     fi
 
-    # THEME RESTORE (sem pergunta)
+    # THEME + LANG RESTORE (sem pergunta)
     DEFAULT_THEME_SRC="$PROJECT_DIR/themes/default/admin.css"
-
     if [[ -f "$DEFAULT_THEME_SRC" ]]; then
         echo "♻️ Restaurando tema padrão..."
         sudo cp -f "$DEFAULT_THEME_SRC" "$DEST_DIR/admin.css"
@@ -79,17 +77,30 @@ if [[ "${1:-}" == "--uninstall" ]]; then
         warning "Tema default não encontrado em $DEFAULT_THEME_SRC"
     fi
 
+    DEFAULT_LANG_SRC="$PROJECT_DIR/lang/static/default"
+    if [[ -d "$DEFAULT_LANG_SRC" ]]; then
+        echo "♻️ Restaurando idioma padrão..."
+        for f in "$DEFAULT_LANG_SRC"/*; do
+            [[ -f "$f" ]] && sudo cp -f "$f" "$DEST_DIR/$(basename "$f")"
+        done
+        success "Idioma padrão restaurado"
+    else
+        warning "Idioma default não encontrado em $DEFAULT_LANG_SRC"
+    fi
+
     success "Uninstall concluído"
     exit 0
 fi
 
 # ------------------- INÍCIO -------------------
+
 echo "🎨 Free Claude Code Personalizer"
 echo "=================================="
 
 [[ -d "$DEST_DIR" ]] || error "DEST_DIR não existe: $DEST_DIR"
 
 # ------------------- TEMA -------------------
+
 echo ""
 echo "🎨 Seleção de tema:"
 
@@ -109,9 +120,40 @@ THEME_SRC="$PROJECT_DIR/themes/$theme/admin.css"
 
 echo "📦 Instalando tema..."
 sudo cp -f "$THEME_SRC" "$DEST_DIR/admin.css"
-success "Tema instalado"
+success "Tema '$theme' instalado"
+
+# ------------------- IDIOMA -------------------
+
+echo ""
+echo "🌐 Seleção de idioma:"
+
+lang_options=()
+for lang_dir in "$PROJECT_DIR"/lang/static/*/; do
+    [[ -d "$lang_dir" ]] && lang_options+=("$(basename "$lang_dir")")
+done
+
+if [[ ${#lang_options[@]} -eq 0 ]]; then
+    warning "Nenhum idioma encontrado em lang/static/ — ignorando seleção de idioma"
+else
+    select lang in "${lang_options[@]}"; do
+        [[ -n "${lang:-}" ]] && break
+    done
+
+    LANG_SRC="$PROJECT_DIR/lang/static/$lang"
+    [[ -d "$LANG_SRC" ]] || error "Pasta de idioma não encontrada: $LANG_SRC"
+
+    echo "📦 Instalando idioma '$lang'..."
+    for f in "$LANG_SRC"/*; do
+        if [[ -f "$f" ]]; then
+            sudo cp -f "$f" "$DEST_DIR/$(basename "$f")"
+            success "  $(basename "$f") copiado"
+        fi
+    done
+    success "Idioma '$lang' instalado"
+fi
 
 # ------------------- SYSTEMD TEMPLATE -------------------
+
 echo ""
 echo "⚙️ Instalando systemd template (fcc@.service)..."
 
@@ -124,20 +166,16 @@ echo "🔄 systemd daemon-reload..."
 sudo systemctl daemon-reload
 
 TARGET_USER="${SUDO_USER:-$USER}"
-
 echo "🚀 Ativando instância: $TARGET_USER"
 
-# limpeza segura da instância anterior
 sudo systemctl stop "fcc@$TARGET_USER" 2>/dev/null || true
 sudo systemctl disable "fcc@$TARGET_USER" 2>/dev/null || true
-
 sudo systemctl enable "fcc@$TARGET_USER"
 sudo systemctl start "fcc@$TARGET_USER"
 
 sleep 1
 
 echo "🔎 Validando serviço..."
-
 if systemctl is-active --quiet "fcc@$TARGET_USER"; then
     success "fcc@$TARGET_USER ativo e saudável"
 else
@@ -148,11 +186,11 @@ else
 fi
 
 # ------------------- ALIASES -------------------
+
 echo ""
 echo "🔧 Instalando aliases..."
 
 if [[ -f "$ALIASES_FILE" ]]; then
-
     if grep -q "Free Claude Code aliases" "$BASHRC"; then
         sed -i '/# Free Claude Code aliases - Installed/,/# Fim dos aliases do Free Claude Code/d' "$BASHRC"
     fi
@@ -177,13 +215,12 @@ else
 fi
 
 # ------------------- FINAL -------------------
+
 echo ""
 echo "🎉 Instalação concluída com sucesso"
-
 echo ""
 echo "📌 Status da instância:"
 systemctl status "fcc@$TARGET_USER" --no-pager || true
-
 echo ""
 echo "💡 Logs:"
 echo "   journalctl -u fcc@$TARGET_USER -f"

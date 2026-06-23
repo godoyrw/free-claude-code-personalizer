@@ -1,0 +1,18 @@
+[Unit]
+Description=FCC i18n Proxy — %i
+Documentation=https://github.com/godoyrw/free-claude-code-personalizer
+After=network.target fcc@%i.service
+Wants=fcc@%i.service
+
+[Service]
+Type=simple
+User=%i
+ExecStart=/usr/bin/python3 /home/%i/.fcc/fcc_proxy.py --lang pt_BR --port 8083
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=fcc-proxy@%i
+
+[Install]
+WantedBy=multi-user.target
