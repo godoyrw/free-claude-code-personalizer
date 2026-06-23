@@ -26,9 +26,6 @@ desktop.ini
 admin.css.bak.*
 *.backup
 
-# Pasta de idiomas (ignorada conforme solicitado)
-#lang/ -- somente na main deve ser descomentado
-
 # Outros
 # Se houver arquivos de tema customizados gerados pelo usuário, podem ser adicionados aqui
 # custom/
