@@ -4,14 +4,14 @@
 
 <p align="center">
 
-<img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
-<img src="https://img.shields.io/badge/Shell-Bash-4EAA25?logo=gnu-bash&logoColor=white" alt="Shell Script">
-<img src="https://img.shields.io/badge/Platform-Linux-FCC624?logo=linux&logoColor=black" alt="Platform">
-<img src="https://img.shields.io/badge/Init-systemd-informational" alt="systemd">
-<img src="https://img.shields.io/badge/Themes-14-blueviolet" alt="Themes">
-<img src="https://img.shields.io/github/stars/godoyrw/free-claude-code-personalizer?style=social" alt="GitHub stars">
-<img src="https://img.shields.io/github/issues/godoyrw/free-claude-code-personalizer" alt="GitHub issues">
-<img src="https://img.shields.io/github/last-commit/godoyrw/free-claude-code-personalizer" alt="GitHub last commit">
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Shell Script](https://img.shields.io/badge/Shell-Bash-4EAA25?logo=gnu-bash&logoColor=white)](https://www.gnu.org/software/bash/)
+[![Platform](https://img.shields.io/badge/Platform-Linux-FCC624?logo=linux&logoColor=black)](https://www.kernel.org/)
+[![systemd](https://img.shields.io/badge/Init-systemd-informational)](https://systemd.io/)
+[![Themes](https://img.shields.io/badge/Themes-14-blueviolet)](#-temas-disponíveis)
+[![GitHub stars](https://img.shields.io/github/stars/godoyrw/free-claude-code-personalizer?style=social)](https://github.com/godoyrw/free-claude-code-personalizer/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/godoyrw/free-claude-code-personalizer)](https://github.com/godoyrw/free-claude-code-personalizer/issues)
+[![GitHub last commit](https://img.shields.io/github/last-commit/godoyrw/free-claude-code-personalizer)](https://github.com/godoyrw/free-claude-code-personalizer/commits/main)
 
 </p>
 
