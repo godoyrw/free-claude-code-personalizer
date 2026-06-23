@@ -27,7 +27,7 @@ admin.css.bak.*
 *.backup
 
 # Pasta de idiomas (ignorada conforme solicitado)
-langs/
+lang/
 
 # Outros
 # Se houver arquivos de tema customizados gerados pelo usuário, podem ser adicionados aqui

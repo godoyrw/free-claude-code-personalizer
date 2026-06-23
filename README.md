@@ -2,7 +2,7 @@
 
 Este projeto permite personalizar a interface de administração do Free Claude Code com diferentes temas, idiomas, instalar o serviço systemd e adicionar aliases de comando para facilitar o gerenciamento.
 
-## 📋 Visão Gerale
+## 📋 Visão Geral
 
 O instalador permite que você:
 - Escolha entre vários idiomas disponíveis (incluindo português do Brasil)
@@ -17,7 +17,7 @@ O instalador permite que você:
 ## 📁 Estrutura do Projeto
 
 ```
-├── langs/                 # Arquivos de idioma (JavaScript)
+├── langs/                 # Arquivos de idioma (JavaScript) – **ignorados pelo .gitignore**
 │   ├── static/            # Contém os idiomas reais
 │   │   ├── default/       # Idioma padrão (inglês)
 │   │   └── pt-br/         # Português do Brasil
@@ -43,7 +43,8 @@ O instalador permite que você:
 │   └── ...                # Mais temas disponíveis
 ├── install_fcc-personalizer.sh   # Script de instalação interativo
 ├── uninstall_fcc-personalizer.sh # Script de desinstalação
-└── README.md              # Este archivo
+├── .gitignore             # Arquivo de ignorar do Git (ignora langs/, backups, etc.)
+└── README.md              # Este arquivo
 ```
 
 ## 🚀 Como Usar
@@ -70,6 +71,8 @@ Para desinstalar e restaurar as configurações padrão:
 
 - **default** - Inglês (padrão)
 - **pt-br** - Português do Brasil
+
+> ⚠️ A pasta `langs/` está listada no `.gitignore` para evitar que os arquivos de idioma sejam versionados acidentalmente. Eles ainda estão disponíveis no projeto para uso local.
 
 ## 🎨 Temas Disponíveis
 
@@ -148,9 +151,9 @@ O script `install_fcc-personalizer.sh`:
 4. Copia os arquivos selecionados para o diretório de instalação do Free Claude Code
 5. Instala o serviço systemd (fcc.service) e o habilita
 6. Mostra o status do serviço após a instalação
-7. Verifica se já existem aliases do Free Claude Code em ~/.bashrc
+7. Verifica se já existem aliases do Free Claude Code em `~/.bashrc`
 8. Pergunta se deseja remover e reinstalá-los (se existirem)
-9. Instala os aliases de comando no ~/.bashrc
+9. Instala os aliases de comando no `~/.bashrc`
 10. Carrega os aliases imediatamente na sessão atual
 11. Cria um backup dos arquivos originais antes da substituição
 12. Opcionalmente reinicia o servidor Free Claude Code para aplicar as mudanças imediatamente
@@ -162,8 +165,9 @@ O script `install_fcc-personalizer.sh`:
 - Se encontrar qualquer problema, você pode restaurar a partir dos backups criados
 - O script requer que o comando `fcc-server` esteja disponível no PATH
 - A instalação do serviço systemd requer privilégios sudo
-- Os aliases são adicionados ao ~/.bashrc e ficam disponíveis em novas sessões
+- Os aliases são adicionados ao `~/.bashrc` e ficam disponíveis em novas sessões
 - O script agora verifica conflitos com aliases existentes antes de instalar
+- O `.gitignore` impede que a pasta `langs/` e arquivos de backup sejam versionados
 
 ## 💡 Dicas
 
@@ -172,4 +176,4 @@ O script `install_fcc-personalizer.sh`:
 - Após instalar o serviço, você pode gerenciá-lo facilmente com os aliases (fcc-start, fcc-stop, etc.) ou comandos systemctl
 - Alterações só entram em efeito após reiniciar o servidor Free Claude Code
 - Se executar o script de instalação várias vezes, ele irá detectar aliases existentes e perguntar o que fazer
-- O script de desinstalação restaura o tema e idioma padrão, remove o serviço e os aliases# free-claude-code-personalizer
+- O script de desinstalação restaura o tema e idioma padrão, remove o serviço e os aliases
