@@ -1,35 +1,55 @@
-# Free Cloud Code - Personalizer
+# Free Claude Code - Personalizer
 
-Este projeto permite personalizar a interface de administração do Free Claude Code com diferentes temas, idiomas, instalar o serviço systemd (como template) e adicionar aliases de comando para facilitar o gerenciamento.
+![Free Claude Code - Personalizer](assets/free-claude-code-personalizer.jpg)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Shell Script](https://img.shields.io/badge/Shell-Bash-4EAA25?logo=gnu-bash&logoColor=white)](https://www.gnu.org/software/bash/)
+[![Platform](https://img.shields.io/badge/Platform-Linux-FCC624?logo=linux&logoColor=black)](https://www.kernel.org/)
+[![systemd](https://img.shields.io/badge/Init-systemd-informational)](https://systemd.io/)
+[![Themes](https://img.shields.io/badge/Themes-14-blueviolet)](#-temas-disponíveis)
+[![GitHub stars](https://img.shields.io/github/stars/godoyrw/free-claude-code-personalizer?style=social)](https://github.com/godoyrw/free-claude-code-personalizer/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/godoyrw/free-claude-code-personalizer)](https://github.com/godoyrw/free-claude-code-personalizer/issues)
+[![GitHub last commit](https://img.shields.io/github/last-commit/godoyrw/free-claude-code-personalizer)](https://github.com/godoyrw/free-claude-code-personalizer/commits/main)
+
+Este projeto permite personalizar a interface de administração do Free Claude Code com diferentes temas visuais, instalar o serviço systemd e adicionar aliases de comando para facilitar o gerenciamento.
 
 ## 📋 Visão Geral
 
-O instalador permite que você:
-- Escolha entre vários idiomas disponíveis (incluindo português do Brasil)
+O script `fcc-personalizer.sh` permite que você:
+
 - Selecione entre diversos temas visuais para a interface admin
-- Instale facilmente o idioma e tema escolhidos na sua instalação do Free Claude Code
 - Instale o serviço systemd **template** (`fcc@.service`) para gerenciamento automático do Free Claude Code (uma instância por usuário)
-- Instale aliases de comando para facilitar o controle do serviço (fcc-start, fcc-stop, etc.)
-- Verifique se já existem aliases e escolha se deseja remover/reinstalar
-- Veja o status do serviço após a instalação
-- Reinicie o servidor após a instalação para aplicar as mudanças
+- Instale aliases de comando para facilitar o controle do serviço (`fcc-start`, `fcc-stop`, etc.)
+- Verifique e reinicie instâncias existentes do serviço com segurança
+- Desinstale tudo e restaure o tema padrão com a flag `--uninstall`
+
+> **Nota sobre idiomas:** A seleção de idioma **ainda não está implementada** no script atual — somente temas são aplicados. A estrutura de arquivos de idioma já está versionada no repositório e poderá ser integrada em versões futuras.
+
+---
 
 ## 📁 Estrutura do Projeto
 
-```text
+```
 .
-├── .claude/                 # Diretório de configuração do Claude Code (gerado pelo agente)
-├── .git/                    # Repositório Git
-├── .gitignore               # Arquivos e pastas ignorados pelo Git
-├── lang/                    # Arquivos de idioma (JavaScript) – **ignorados pelo .gitignore**
-│   ├── static/              # Contém os idiomas reais
-│   │   ├── default/         # Idioma padrão (inglês)
-│   │   └── pt-br/           # Português do Brasil
-│   └── dynamic/             # (outro propósito)
-├── service/                 # Arquivos de serviço e aliases
-│   ├── fcc.service          # Arquivo de serviço systemd
-│   └── fcc.aliases.sh       # Aliases de comando para gerenciamento
-├── themes/                  # Arquivos de tema (CSS)
+├── .gitignore                # Arquivos e pastas ignorados pelo Git (inclui lang/)
+├── lang/                     # Arquivos de idioma (JavaScript) – versionados no repositório
+│   ├── static/               # Idiomas estáticos
+│   │   ├── default/          # Idioma padrão (inglês)
+│   │   │   ├── admin.js
+│   │   │   └── index.html
+│   │   └── pt-br/            # Português do Brasil
+│   │       ├── admin.js
+│   │       └── index.html
+│   └── dynamic/              # Idiomas dinâmicos (locales)
+│       ├── locales/
+│       │   ├── config.json
+│       │   ├── en.json
+│       │   └── pt_BR.json
+│       └── README.md
+├── service/                  # Arquivos de serviço e aliases
+│   ├── fcc@.service          # Template de serviço systemd
+│   └── fcc.aliases.sh        # Aliases de comando para gerenciamento
+├── themes/                   # Temas visuais (CSS)
 │   ├── campbell/
 │   ├── default/
 │   ├── dracula/
@@ -44,26 +64,17 @@ O instalador permite que você:
 │   ├── ubuntu/
 │   ├── vs-code/
 │   └── xterm/
-├── install_fcc-personalizer.sh   # Script de instalação interativo
-├── uninstall_fcc-personalizer.sh # Script de desinstalação
-└── README.md                # Este arquivo
+├── fcc-personalizer.sh       # Script principal (instalação e desinstalação)
+└── README.md                 # Este arquivo
 ```
 
-A seguir está a estrutura completa de pastas e arquivos, representada em diagrama Mermaid:
+Diagrama Mermaid da estrutura completa:
 
 ```mermaid
 graph TD
     root[Root]
-    %% Scripts
-    root --> fcc[ fcc-personalizer.sh]
-    %% Lang
+    root --> fcc[fcc-personalizer.sh]
     root --> lang[lang]
-    lang --> dynamic[dynamic]
-    dynamic --> locales[locales]
-    locales --> config[config.json]
-    locales --> en[en.json]
-    locales --> pt_BR[pt_BR.json]
-    dynamic --> readme_d[README.md]
     lang --> static[static]
     static --> default[default]
     default --> admin_js[admin.js]
@@ -71,13 +82,16 @@ graph TD
     static --> pt_br[pt-br]
     pt_br --> admin_js_pt[admin.js]
     pt_br --> index_html_pt[index.html]
-    %% README
+    lang --> dynamic[dynamic]
+    dynamic --> locales[locales]
+    locales --> config[config.json]
+    locales --> en[en.json]
+    locales --> pt_BR[pt_BR.json]
+    dynamic --> readme_d[README.md]
     root --> readme[README.md]
-    %% Service
     root --> service[service]
     service --> aliases[fcc.aliases.sh]
     service --> service_file[fcc@.service]
-    %% Themes
     root --> themes[themes]
     themes --> campbell[campbell]
     campbell --> css_c[admin.css]
@@ -109,141 +123,204 @@ graph TD
     xterm --> css_x[admin.css]
 ```
 
-> **Observação:** A pasta `lang/` está listada no `.gitignore` para evitar que os arquivos de idioma sejam versionados acidentalmente. Eles permanecem disponíveis localmente para uso.
+---
 
 ## 🚀 Como Usar
 
-1. **Certifique‑se de que o Free Claude Code está instalado** no seu sistema  
-2. **Execute o script de instalação:**
-   ```bash
-   ./fcc-personalizer.sh
-   ```
-3. **Siga as instruções na tela:**
-   - Selecione o idioma desejado  
-   - Selecione o tema desejado  
-   - O script verificará se já existem aliases e perguntará se deseja remover/reinstalar  
-   - O script instalará automaticamente o serviço systemd template e mostrará seu status  
-   - O script instalará os aliases e os carregará imediatamente na sessão atual  
-   - Confirme se deseja reiniciar o servidor Free Claude Code após a instalação  
+1. **Certifique-se de que o Free Claude Code está instalado** no seu sistema
+2. **Clone o repositório:**
 
-Para desinstalar e restaurar as configurações padrão:
+```bash
+git clone https://github.com/godoyrw/free-claude-code-personalizer.git
+cd free-claude-code-personalizer
+```
+
+3. **Torne o script executável (se necessário):**
+
+```bash
+chmod +x fcc-personalizer.sh
+```
+
+4. **Execute o script:**
+
+```bash
+./fcc-personalizer.sh
+```
+
+5. **Siga as instruções na tela:**
+   - Selecione o tema desejado
+   - O script instalará automaticamente o serviço systemd template e iniciará uma instância para o seu usuário
+   - Os aliases serão adicionados ao `~/.bashrc` e carregados imediatamente na sessão atual
+   - O status do serviço será exibido ao final
+
+**Para desinstalar e restaurar as configurações padrão:**
+
 ```bash
 ./fcc-personalizer.sh --uninstall
 ```
-(o mesmo script suporta a flag `--uninstall` para remover tudo)
 
-## 🌐 Idiomas Disponíveis
+A flag `--uninstall` para e desabilita o serviço, remove o template systemd, remove os aliases do `~/.bashrc` e restaura o tema padrão de `themes/default/admin.css`.
 
-- **default** – Inglês (padrão)  
-- **pt-br** – Português do Brasil  
+> ⚠️ **Atenção:** O `DEST_DIR` no script está configurado para um caminho fixo. Antes de usar, verifique e ajuste a variável `DEST_DIR` no início do `fcc-personalizer.sh` para corresponder ao seu ambiente.
 
-> ⚠️ A pasta `lang/` está listada no `.gitignore` para evitar que os arquivos de idioma sejam versionados acidentalmente. Eles ainda estão disponíveis no projeto para uso local.
+---
 
 ## 🎨 Temas Disponíveis
 
-O projeto inclui diversos temas visuais para personalizar a interface:
+| Tema | Descrição |
+|---|---|
+| `default` | Tema padrão do Free Claude Code |
+| `god-purple` | Tema roxo e preto — moderno e elegante |
+| `campbell` | Esquema de cores Campbell |
+| `dracula` | Tema escuro popular Dracula |
+| `gnome` | Inspirado no ambiente GNOME |
+| `high-contrast` | Alto contraste para acessibilidade |
+| `horizon` | Gradientes suaves |
+| `linux` | Cores do terminal Linux clássico |
+| `nord` | Paleta nórdica escura |
+| `solarized` | Solarized versão escura |
+| `tango` | Padrão de cores Tango |
+| `ubuntu` | Cores da distribuição Ubuntu |
+| `vs-code` | Inspirado no Visual Studio Code |
+| `xterm` | Terminal XTerm tradicional |
 
-- `default` – Tema padrão do Free Claude Code  
-- `god-purple` – Tema roxo e preto (destacado)  
-- `campbell` – Tema baseado no esquema Campbell  
-- `dracula` – Tema escuro popular Dracula  
-- `gnome` – Tema inspirado no GNOME  
-- `high-contrast` – Tema de alto contraste para acessibilidade  
-- `horizon` – Tema com gradientes suaves  
-- `linux` – Tema com cores do terminal Linux clássico  
-- `nord` – Tema nórdico escuro  
-- `solarized` – Tema Solarized (versão escura)  
-- `tango` – Tema baseado no padrão Tango  
-- `ubuntu` – Tema com cores da distribuição Ubuntu  
-- `vs-code` – Tema inspirado no Visual Studio Code  
-- `xterm` – Tema tradicional do terminal XTerm  
-- … e muitos outros disponíveis em `themes/`
+---
 
 ## ⚙️ Serviço Systemd
 
-O instalador agora inclui a instalação automática do **template** systemd:
+O script instala automaticamente o **template** systemd `fcc@.service`:
 
-- Instala `fcc@.service` em `/etc/systemd/system/` (template de serviço)  
-- Recarrega o daemon do systemd  
-- Habilita e inicia uma instância do serviço para o usuário que executou o instalador (`fcc@$USER`)  
-- Mostra o status da instância após a instalação  
-- Permite gerenciamento via `systemctl` (substitua `<user>` pelo seu nome de usuário, geralmente o mesmo que lançou o instalador):
+- Copia `fcc@.service` para `/etc/systemd/system/`
+- Recarrega o daemon do systemd
+- Para e desabilita qualquer instância anterior com segurança
+- Habilita e inicia uma nova instância para o usuário atual (`fcc@$USER`)
+- Valida se o serviço está ativo após a instalação e exibe logs em caso de falha
+
+Após instalado, gerencie o serviço com (substitua `<user>` pelo seu nome de usuário):
 
 ```bash
-sudo systemctl start fcc@<user>.service    # Iniciar a instância do serviço
-sudo systemctl stop fcc@<user>.service     # Parar a instância do serviço
-sudo systemctl restart fcc@<user>.service  # Reiniciar a instância do serviço
-sudo systemctl status fcc@<user>.service   # Ver status da instância do serviço
+sudo systemctl start   fcc@<user>.service   # Iniciar
+sudo systemctl stop    fcc@<user>.service   # Parar
+sudo systemctl restart fcc@<user>.service   # Reiniciar
+sudo systemctl status  fcc@<user>.service   # Ver status
+journalctl -u fcc@<user> -f                 # Acompanhar logs em tempo real
 ```
+
+---
 
 ## 🔧 Aliases de Comando
 
-Além do serviço, o instalador adiciona aliases convenientes ao seu `~/.bashrc`:
+O script adiciona os seguintes aliases ao `~/.bashrc` (e opcionalmente em `/etc/bash.bashrc.d/fcc-aliases` para disponibilidade system-wide):
 
-- `fcc-start` – Inicia o serviço Free Claude Code  
-- `fcc-stop` – Para o serviço Free Claude Code  
-- `fcc-restart` – Reinicia o serviço Free Claude Code  
-- `fcc-status` – Mostra o status do serviço Free Claude Code  
-- `fcc-logs` – Visualiza os logs do serviço em tempo real  
+| Alias | Ação |
+|---|---|
+| `fcc-start` | Inicia o serviço Free Claude Code |
+| `fcc-stop` | Para o serviço Free Claude Code |
+| `fcc-restart` | Reinicia o serviço Free Claude Code |
+| `fcc-status` | Mostra o status do serviço |
+| `fcc-logs` | Visualiza os logs em tempo real |
 
-O script agora:
-- Verifica se já existem aliases do Free Claude Code em `~/.bashrc`  
-- Pergunta se você deseja remover os existentes e reinstalá-los  
-- Carrega os imediatamente na sessão atual com `source ~/.bashrc`  
-- Permite que você use os aliases imediatamente após a instalação  
+Os aliases ficam disponíveis imediatamente na sessão atual após a instalação. Em novas sessões de terminal, são carregados automaticamente via `~/.bashrc`. Se necessário, carregue manualmente:
 
-Esses alias ficam disponíveis automaticamente em novas sessões de terminal ou podem ser carregados imediatamente com:
 ```bash
 source ~/.bashrc
 ```
 
+Se já existirem aliases do FCC no `~/.bashrc`, o script os remove antes de reinstalar.
+
+---
+
+## ⚙️ Como Funciona o Script
+
+O `fcc-personalizer.sh`:
+
+1. Verifica se o `DEST_DIR` existe
+2. Lista os temas disponíveis em `themes/` e solicita seleção
+3. Copia o `admin.css` do tema selecionado para o diretório de instalação do Free Claude Code
+4. Instala o template `fcc@.service` em `/etc/systemd/system/`
+5. Executa `systemctl daemon-reload`
+6. Para e desabilita qualquer instância anterior com segurança
+7. Habilita e inicia a instância `fcc@$USER`
+8. Valida se o serviço está ativo (exibe logs em caso de falha)
+9. Remove aliases anteriores do `~/.bashrc` (se existirem)
+10. Instala os novos aliases em `~/.bashrc` e em `/etc/bash.bashrc.d/fcc-aliases`
+11. Carrega os aliases imediatamente com `source ~/.bashrc`
+
+> O script **não cria backup** dos arquivos substituídos. Para restaurar o padrão, use `--uninstall`.
+
+---
+
 ## 🛠️ Personalização Avançada
 
-Se desejar criar seu próprio tema ou idioma:
+### Criar um novo tema
 
-### Para criar um novo tema:
-1. Duplicar uma das pastas existentes em `themes/`  
-2. Modificar o arquivo `admin.css` com suas variáveis CSS personalizadas  
-3. O tema será automaticamente detectado pelo instalador  
+1. Duplique uma pasta existente em `themes/`
+2. Modifique o `admin.css` com suas variáveis CSS personalizadas
+3. O tema será detectado automaticamente pelo script
 
-### Para criar um novo idioma:
-1. Duplicar uma das pastas existentes em `lang/static/`  
-2. Modificar o arquivo `admin.js` traduzindo as strings para o seu idioma  
-3. O idioma será automaticamente detectado pelo instalador  
+### Adicionar um novo idioma
 
-## ⚙️ Como Funciona o Instalador
+> Funcionalidade planejada — a seleção de idioma ainda não está implementada no script.
 
-O script `fcc-personalizer.sh`:
-1. Verifica se o Free Claude Code está instalado  
-2. Apresenta uma lista de idiomas disponíveis para seleção  
-3. Apresenta uma lista de temas disponíveis para seleção  
-4. Copia os arquivos selecionados para o diretório de instalação do Free Claude Code  
-5. Instala o serviço systemd template (`fcc@.service`) e o habilita  
-6. Mostra o status da instância do serviço após a instalação  
-7. Verifica se já existem aliases do Free Claude Code em `~/.bashrc`  
-8. Pergunta se deseja remover e reinstalá-los (se existirem)  
-9. Instala os aliases de comando em `~/.bashrc`  
-10. Carrega os imediatamente na sessão atual  
-11. **Não cria backup automático** – simplesmente substitui os arquivos existentes  
-12. Opcionalmente reinicia o servidor Free Claude Code para aplicar as mudanças imediatamente  
+1. Duplique uma pasta existente em `lang/static/`
+2. Modifique `admin.js` e `index.html` traduzindo as strings
+3. O idioma poderá ser selecionado quando a funcionalidade for implementada
 
-## 📝 Notas
+---
 
-- Para restaurar o tema ou idioma padrão, você pode usar a opção de desinstalação (`--uninstall`) que copia o tema padrão de `themes/default/admin.css` e remove as personalizações, ou copiar manualmente os arquivos padrão presentes em `themes/default/` e `lang/static/` para os destinos apropriados.  
-- Se encontrar qualquer problema, você pode restaurar manualmente a partir dos arquivos padrão presentes no repositório.  
-- O script requer que o comando `fcc-server` esteja disponível no PATH  
-- A instalação do serviço systemd requer privilegios `sudo`  
-- Os aliases são adicionados ao `~/.bashrc` e ficam disponíveis em novas sessões  
+## 📝 Requisitos
+
+- Free Claude Code instalado e com `fcc-server` disponível no `PATH`
+- `sudo` para instalação do serviço systemd e cópia de arquivos para o `DEST_DIR`
+- Shell Bash
+
+---
 
 ## 💡 Dicas
 
-- Experimente diferentes combinações de idioma e tema para encontrar sua preferida  
-- O tema `god-purple` foi especialmente projetado para proporcionar uma experiência moderna com tons de roxo e preto  
-- Após instalar o serviço, você pode gerenciá‑lo facilmente com os aliases (`fcc-start`, `fcc-stop`, etc.) ou comandos `systemctl` (usando a instância `fcc@<user>.service`)  
-- Alterações só entram em efeito após reiniciar o servidor Free Claude Code  
-- Se executar o script de instalação várias vezes, ele detectará aliases existentes e perguntará o que fazer  
-- O mesmo script, com a flag `--uninstall`, restaura o tema e idioma padrão, remove o serviço e os alias  
+- Experimente diferentes temas para encontrar o que mais agrada
+- O tema `god-purple` foi projetado especialmente para uma experiência moderna com tons de roxo e preto
+- Execute `journalctl -u fcc@$USER -f` para acompanhar os logs em tempo real após a instalação
+- Execute o script novamente a qualquer momento para trocar de tema — os aliases existentes serão detectados e reinstalados automaticamente
+- Use `--uninstall` para remover tudo e voltar ao estado original
 
---- 
+---
+
+## 📄 Licença
+
+Este projeto está licenciado sob a **MIT License**.
+
+```
+MIT License
+
+Copyright (c) 2026 Roberto Godoy
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+## 👤 Autor
+
+Desenvolvido por [Roberto Godoy](https://github.com/godoyrw)  
+[![ORCID](https://img.shields.io/badge/ORCID-0009--0003--2100--4772-green.svg)](https://orcid.org/0009-0003-2100-4772)
+
+---
 
 *Documentação mantida em português brasileiro conforme as diretrizes do projeto.*
