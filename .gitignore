@@ -1,0 +1,34 @@
+# Dependências e diretórios de build
+node_modules/
+dist/
+build/
+.out/
+.cache/
+.coverage
+*.pyc
+__pycache__/
+*.log
+*.tmp
+*.bak
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Configurações locais de IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Arquivos de backup do instalador
+admin.css.bak.*
+*.backup
+
+# Pasta de idiomas (ignorada conforme solicitado)
+langs/
+
+# Outros
+# Se houver arquivos de tema customizados gerados pelo usuário, podem ser adicionados aqui
+# custom/

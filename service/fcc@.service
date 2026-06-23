@@ -1,0 +1,31 @@
+[Unit]
+Description=FCC Application for user %i
+After=network.target
+
+[Service]
+Type=simple
+
+# usuário e grupo dinâmicos
+User=%i
+Group=%i
+
+# diretório home dinâmico
+WorkingDirectory=/home/%i
+
+# binário no home do usuário
+ExecStart=/home/%i/.local/bin/fcc-server
+
+# reinício automático
+Restart=always
+RestartSec=5
+
+# logs no journalctl
+StandardOutput=journal
+StandardError=journal
+
+# boas práticas de ambiente limpo
+Environment="HOME=/home/%i"
+Environment="USER=%i"
+
+[Install]
+WantedBy=multi-user.target
