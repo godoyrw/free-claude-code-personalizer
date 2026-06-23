@@ -1,5 +1,5 @@
 #!/bin/bash
-# install_fcc-personalizer.sh
+# fcc-personalizer.sh
 # Instala tema, systemd template e aliases para Free Claude Code
 
 set -euo pipefail
