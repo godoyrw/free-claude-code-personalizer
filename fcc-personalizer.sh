@@ -90,15 +90,15 @@ if [[ "${1:-}" == "--uninstall" ]]; then
 
     # Remove proxy files
     echo "🧹 Removendo arquivos do proxy..."
-    rm -f "/home/${TARGET_USER}/.fcc/fcc_proxy.py"
-    rm -rf "/home/${TARGET_USER}/.fcc/locales"
+    sudo rm -f "/home/${TARGET_USER}/.fcc/fcc_proxy.py"
+    sudo rm -rf "/home/${TARGET_USER}/.fcc/locales"
     # Remove proxy service
     echo "🧹 Removendo serviço do proxy..."
-    systemctl stop "fcc-proxy@${TARGET_USER}" 2>/dev/null || true
-    systemctl disable "fcc-proxy@${TARGET_USER}" 2>/dev/null || true
-    rm -f "/etc/systemd/system/fcc-proxy@.service"
-    systemctl daemon-reload
-    systemctl reset-failed || true
+    sudo systemctl stop "fcc-proxy@${TARGET_USER}" 2>/dev/null || true
+    sudo systemctl disable "fcc-proxy@${TARGET_USER}" 2>/dev/null || true
+    sudo rm -f "/etc/systemd/system/fcc-proxy@.service"
+    sudo systemctl daemon-reload
+    sudo systemctl reset-failed || true
     success "Uninstall concluído"
     exit 0
 fi
@@ -162,43 +162,50 @@ else
     done
     success "Idioma '$lang' instalado"
 fi
+
 echo ""
 echo "🔧 Instalando proxy..."
 # Ensure TARGET_USER is set (for when this block runs before the systemd section)
 : "${TARGET_USER:=${SUDO_USER:-$USER}}"
+
 # Copy fcc_proxy.py
 PROXY_SRC="$PROJECT_DIR/lang/fcc_proxy.py"
 PROXY_DEST="/home/${TARGET_USER}/.fcc/fcc_proxy.py"
 mkdir -p "/home/${TARGET_USER}/.fcc"
-cp -f "$PROXY_SRC" "$PROXY_DEST"
+sudo cp -f "$PROXY_SRC" "$PROXY_DEST"
+
 # Copy locales
 LOCALES_SRC="$PROJECT_DIR/lang/dynamic/locales"
 LOCALES_DEST="/home/${TARGET_USER}/.fcc/locales"
-rm -rf "$LOCALES_DEST"
-cp -r "$LOCALES_SRC" "$LOCALES_DEST"
+sudo rm -rf "$LOCALES_DEST"
+sudo cp -r "$LOCALES_SRC" "$LOCALES_DEST"
+
 # Install service
 PROXY_SERVICE_NAME="fcc-proxy@.service"
 PROXY_SERVICE_DIR="/etc/systemd/system"
 PROXY_SERVICE_PATH="$PROXY_SERVICE_DIR/$PROXY_SERVICE_NAME"
 PROXY_SOURCE_SERVICE="$PROJECT_DIR/service/$PROXY_SERVICE_NAME"
+
 echo "📦 Instalando template do proxy..."
-cp -f "$PROXY_SOURCE_SERVICE" "$PROXY_SERVICE_PATH"
+sudo cp -f "$PROXY_SOURCE_SERVICE" "$PROXY_SERVICE_PATH"
+
 echo "🔄 systemd daemon-reload..."
-systemctl daemon-reload
+sudo systemctl daemon-reload
 TARGET_USER="${SUDO_USER:-$USER}"
+
 echo "🚀 Ativando instância do proxy: $TARGET_USER"
-systemctl stop "fcc-proxy@$TARGET_USER" 2>/dev/null || true
-systemctl disable "fcc-proxy@$TARGET_USER" 2>/dev/null || true
-systemctl enable "fcc-proxy@$TARGET_USER"
-systemctl start "fcc-proxy@$TARGET_USER"
+sudo systemctl stop "fcc-proxy@$TARGET_USER" 2>/dev/null || true
+sudo systemctl disable "fcc-proxy@$TARGET_USER" 2>/dev/null || true
+sudo systemctl enable "fcc-proxy@$TARGET_USER"
+sudo systemctl start "fcc-proxy@$TARGET_USER"
 sleep 1
 echo "🔎 Validando serviço do proxy..."
 if systemctl is-active --quiet "fcc-proxy@$TARGET_USER"; then
     success "fcc-proxy@$TARGET_USER ativo e saudável"
 else
     echo "❌ Falha ao iniciar serviço do proxy"
-    systemctl status "fcc-proxy@$TARGET_USER" --no-pager || true
-    journalctl -u "fcc-proxy@$TARGET_USER" --no-pager -n 50 || true
+    sudo systemctl status "fcc-proxy@$TARGET_USER" --no-pager || true
+    sudo journalctl -u "fcc-proxy@$TARGET_USER" --no-pager -n 50 || true
     exit 1
 fi
 
@@ -269,8 +276,13 @@ fi
 echo ""
 echo "🎉 Instalação concluída com sucesso"
 echo ""
-echo "📌 Status da instância:"
-systemctl status "fcc@$TARGET_USER" --no-pager || true
+echo "📌 Status da instância e Proxy:"
+sudo systemctl status "fcc@$TARGET_USER" --no-pager || true
 echo ""
-echo "💡 Logs:"
-echo "   journalctl -u fcc@$TARGET_USER -f"
+sudo systemctl status "fcc-proxy@$TARGET_USER" --no-pager || true
+echo ""
+echo ""
+echo "⚙️ Acessso Admin Proxy:"
+echo "   http://127.0.0.1:8083/admin"
+echo ""
+echo ""
