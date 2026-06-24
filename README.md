@@ -1,8 +1,7 @@
 <p align="center">
    <img src="./assets/free-claude-code-personalizer.jpg" alt="Free Claude Code - Personalizer">
 </p>
-
-<p align="center">
+<div align="center">
 
    [![Free Claude Code](https://img.shields.io/badge/Free_Claude_Code-Repository-blue?logo=github)](https://github.com/Alishahryar1/free-claude-code)
    [![Themes](https://img.shields.io/badge/Themes-14-blueviolet)](#-temas-disponíveis)
@@ -11,8 +10,8 @@
    [![GitHub last commit](https://img.shields.io/github/last-commit/godoyrw/free-claude-code-personalizer)](https://github.com/godoyrw/free-claude-code-personalizer/commits/main)
    [![systemd](https://img.shields.io/badge/Init-systemd-informational)](https://systemd.io/)
    [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://systemd.io/)
-   
-</p>
+
+</div>
 
 # Free Claude Code - Personalizer
 
