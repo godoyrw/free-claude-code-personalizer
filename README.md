@@ -202,6 +202,10 @@ chmod +x fcc-personalizer.sh
 ```bash
 acesse : http://127.0.0.1:8083/admin
 ```
+<p align="center">
+   <img src="./assets/free-claude-code-personalizer-proxy.png" alt="Free Claude Code - Personalizer">
+</p>
+
 
 A flag `--uninstall` para e desabilita os serviços, remove os templates systemd, remove os aliases do `~/.bashrc` e restaura o tema padrão de `themes/default/admin.css`.
 
