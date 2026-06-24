@@ -19,6 +19,10 @@
 
 Este projeto permite personalizar a interface de administração do Free Claude Code com diferentes temas visuais, instalar o serviço systemd, adicionar aliases de comando e configurar um proxy para tradução dinâmica.
 
+#### Versão: v1.0.0
+
+---
+
 ## 📋 Visão Geral
 
 O script `fcc-personalizer.sh` permite que você:
@@ -192,10 +196,11 @@ chmod +x fcc-personalizer.sh
    - Os aliases serão adicionados ao `~/.bashrc` e carregados imediatamente na sessão atual
    - O status dos serviços será exibido ao final
 
-**Para desinstalar e restaurar as configurações padrão:**
+
+### Acesso ao proxy administrativo e traduzido:
 
 ```bash
-./fcc-personalizer.sh --uninstall
+acesse : http://127.0.0.1:8083/admin
 ```
 
 A flag `--uninstall` para e desabilita os serviços, remove os templates systemd, remove os aliases do `~/.bashrc` e restaura o tema padrão de `themes/default/admin.css`.
@@ -262,7 +267,6 @@ journalctl -u fcc@<user> -f                 # Acompanhar logs em tempo real
 - Habilita e inicia uma nova instância para o usuário atual (`fcc-proxy@$USER`)
 - Valida se o serviço está ativo após a instalação e exibe logs em caso de falha
 
-Após instalado, gerencie o serviço com (substitua `<user>` pelo seu nome de usuário):
 
 ```bash
 sudo systemctl start   fcc-proxy@<user>.service   # Iniciar
@@ -383,6 +387,22 @@ O `fcc-personalizer.sh`:
 
 ---
 
+## 🗑️ Desinstalação
+
+```bash
+./fcc-personalizer.sh --uninstall
+```
+Remove:
+
+```
+fcc@.service
+fcc-proxy@.service
+~/.fcc/*
+aliases bash
+restore tema default
+restore idioma default
+```
+
 ## 📄 Licença
 
 Este projeto está licenciado sob a **MIT License**.
@@ -394,4 +414,5 @@ Este projeto está licenciado sob a **MIT License**.
 Desenvolvido por [Roberto Godoy](https://github.com/godoyrw)  
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0003--2100--4772-green.svg)](https://orcid.org/0009-0003-2100-4772)
 
+##### Versão: v1.0.0
 ---
