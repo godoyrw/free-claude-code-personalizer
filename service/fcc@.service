@@ -13,7 +13,7 @@ Group=%i
 WorkingDirectory=/home/%i
 
 # binário no home do usuário
-ExecStart=/home/%i/.local/bin/fcc-server
+ExecStart=/home/%i/.local/bin/fcc-server --8083
 
 # reinício automático
 Restart=always

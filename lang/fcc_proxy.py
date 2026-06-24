@@ -117,11 +117,9 @@ class ProxyHandler(BaseHTTPRequestHandler):
 
     def _forward(self, method: str, body: bytes | None = None) -> tuple[int, dict, bytes]:
         url = FCC_BASE + self.path
-        # Remove Accept-Encoding para o FCC responder sem compressão gzip/br
-        # evitando o bug de Content-Length incorreto
         headers = {
             k: v for k, v in self.headers.items()
-            if k.lower() not in ("host", "content-length", "accept-encoding")
+            if k.lower() not in ("host", "content-length")
         }
         req = urllib.request.Request(url, data=body, headers=headers, method=method)
         try:
@@ -134,22 +132,31 @@ class ProxyHandler(BaseHTTPRequestHandler):
             return 502, {"Content-Type": "application/json"}, b'{"error":"proxy_error"}'
 
     def _send(self, status: int, headers: dict, body: bytes):
-        # Headers que não devem ser repassados ao cliente
-        skip = {
-            "transfer-encoding", "connection", "keep-alive",
-            "proxy-authenticate", "proxy-authorization",
-            "te", "trailers", "upgrade",
-            "content-encoding",  # body já descomprimido
-            "content-length",    # recalculado abaixo com o body real
+        skip_headers = {
+            "content-length",
+            "content-encoding",
+            "transfer-encoding",
+            "connection",
+            "keep-alive",
+            "proxy-authenticate",
+            "proxy-authorization",
+            "te",
+            "trailers",
+            "upgrade",
         }
+
         self.send_response(status)
+
         for k, v in headers.items():
-            if k.lower() not in skip:
+            if k.lower() not in skip_headers:
                 self.send_header(k, v)
+
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
-        self.wfile.write(body)
 
+        self.wfile.write(body)
+        
+    
     def do_GET(self):
         status, headers, body = self._forward("GET")
 
