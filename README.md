@@ -3,21 +3,18 @@
 </p>
 
 <p align="center">
- 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Shell Script](https://img.shields.io/badge/Shell-Bash-4EAA25?logo=gnu-bash&logoColor=white)](https://www.gnu.org/software/bash/)
-[![Platform](https://img.shields.io/badge/Platform-Linux-FCC624?logo=linux&logoColor=black)](https://www.kernel.org/)
-[![systemd](https://img.shields.io/badge/Init-systemd-informational)](https://systemd.io/)
-[![Themes](https://img.shields.io/badge/Themes-14-blueviolet)](#-temas-disponíveis)
-[![GitHub stars](https://img.shields.io/github/stars/godoyrw/free-claude-code-personalizer?style=social)](https://github.com/godoyrw/free-claude-code-personalizer/stargazers)
-[![GitHub issues](https://img.shields.io/github/issues/godoyrw/free-claude-code-personalizer)](https://github.com/godoyrw/free-claude-code-personalizer/issues)
-[![GitHub last commit](https://img.shields.io/github/last-commit/godoyrw/free-claude-code-personalizer)](https://github.com/godoyrw/free-claude-code-personalizer/commits/main)
-
+   [![Free Claude Code](https://img.shields.io/badge/Free_Claude_Code-Repository-blue?logo=github)](https://github.com/Alishahryar1/free-claude-code)
+   [![Themes](https://img.shields.io/badge/Themes-14-blueviolet)](#-temas-disponíveis)
+   [![GitHub stars](https://img.shields.io/github/stars/godoyrw/free-claude-code-personalizer?style=social)](https://github.com/godoyrw/free-claude-code-personalizer/stargazers)
+   [![GitHub issues](https://img.shields.io/github/issues/godoyrw/free-claude-code-personalizer)](https://github.com/godoyrw/free-claude-code-personalizer/issues)
+   [![GitHub last commit](https://img.shields.io/github/last-commit/godoyrw/free-claude-code-personalizer)](https://github.com/godoyrw/free-claude-code-personalizer/commits/main)
+   [![systemd](https://img.shields.io/badge/Init-systemd-informational)](https://systemd.io/)
+   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://systemd.io/)
 </p>
 
 # Free Claude Code - Personalizer
 
-Este projeto permite personalizar a interface de administração do Free Claude Code com diferentes temas visuais, instalar o serviço systemd, adicionar aliases de comando e configurar um proxy para tradução dinâmica.
+Este projeto permite personalizar a interface de administração do (<a href="https://github.com/Alishahryar1/free-claude-code" target="_blank">Free Claude Code</a>) com diferentes temas visuais, instalar o serviço systemd, adicionar aliases de comando e configurar um proxy para tradução dinâmica.
 
 #### Versão: v1.0.0
 
@@ -69,7 +66,7 @@ O script `fcc-personalizer.sh` permite que você:
 
 ```
 .
-├── .gitignore                # Arquivos e pastas ignorados pelo Git (inclui lang/)
+├── .gitignore                # Arquivos e pastas ignorados pelo Git
 ├── lang/                     # Arquivos de idioma (JavaScript) – versionados no repositório
 │   ├── static/               # Idiomas estáticos
 │   │   ├── default/          # Idioma padrão (inglês)
@@ -129,7 +126,7 @@ graph TD
     locales --> pt_BR[pt_BR.json]
     dynamic --> readme_d[README.md]
     dynamic --> proxy_py[fcc_proxy.py]
-    dynamic --> proxy_service[fcc-proxy@.service]
+    dynamic --> proxy_service["fcc-proxy@.service"]
     root --> readme[README.md]
     root --> service[service]
     service --> aliases[fcc.aliases.sh]
@@ -207,8 +204,6 @@ acesse : http://127.0.0.1:8083/admin
 </p>
 
 
-A flag `--uninstall` para e desabilita os serviços, remove os templates systemd, remove os aliases do `~/.bashrc` e restaura o tema padrão de `themes/default/admin.css`.
-
 > ⚠️ **Atenção:** O `DEST_DIR` no script está configurado para um caminho fixo. Antes de usar, verifique e ajuste a variável `DEST_DIR` no início do `fcc-personalizer.sh` para corresponder ao seu ambiente.
 
 ---
@@ -230,7 +225,7 @@ A flag `--uninstall` para e desabilita os serviços, remove os templates systemd
 | tango         | Tema inspirado na paleta Tango             |
 | ubuntu        | Tema inspirado no Ubuntu                   |
 | vs-code       | Tema inspirado no Visual Studio Code       |
-| xterm         | Tema clássico do terminal XTerm            |
+| xterm         | Tabela clássico do terminal XTerm          |
 
 | Idioma | Pasta | Status |
 |----------|----------|----------|
@@ -306,107 +301,6 @@ Se já existirem aliases do FCC no `~/.bashrc`, o script os remove antes de rein
 
 ---
 
-## ⚙️ Como Funciona o Script
-
-O `fcc-personalizer.sh`:
-
-1. Verifica se o `DEST_DIR` existe
-2. Lista os temas disponíveis em `themes/` e solicita seleção
-3. Copia o `admin.css` do tema selecionado para o diretório de instalação do Free Claude Code
-4. Lista os idiomas disponíveis em `lang/static/` e solicita seleção
-5. Copia os arquivos de idioma selecionados para o diretório de instalação do Free Claude Code
-6. Instala o template `fcc@.service` em `/etc/systemd/system/`
-7. Instala o template `fcc-proxy@.service` em `/etc/systemd/system/`
-8. Executa `systemctl daemon-reload`
-9. Para e desabilita qualquer instância anterior dos serviços com segurança
-10. Habilita e inicia as instâncias `fcc@$USER` e `fcc-proxy@$USER`
-11. Valida se os serviços estão ativos (exibe logs em caso de falha)
-12. Remove aliases anteriores do `~/.bashrc` (se existirem)
-13. Instala os novos aliases em `~/.bashrc` e em `/etc/bash.bashrc.d/fcc-aliases`
-14. Carrega os aliases imediatamente com `source ~/.bashrc`
-15. Copia o script proxy `fcc_proxy.py` para `~/.fcc/`
-16. Copia os arquivos de locale dinâmicos para `~/.fcc/locales/`
-
-> O script **não cria backup** dos arquivos substituídos. Para restaurar o padrão, use `--uninstall`.
-
----
-
-## 🛠️ Personalização Avançada
-
-### Criar um novo tema
-
-1. Duplique uma pasta existente em `themes/`
-2. Modifique o `admin.css` com suas variáveis CSS personalizadas
-3. O tema será detectado automaticamente pelo script
-
-### Adicionar um novo idioma estático
-
-1. Duplique uma pasta existente em `lang/static/`
-2. Modifique `admin.js` e `index.html` traduzindo as strings
-3. O idioma será detectado automaticamente pelo script na próxima execução
-
-### Personalizar traduções dinâmicas
-
-1. Modifique os arquivos JSON em `lang/dynamic/locales/`
-2. O proxy carregará essas traduções em tempo de execução
-
----
-
-## 📝 Requisitos
-
-- Free Claude Code instalado e com `fcc-server` disponível no `PATH`
-- `sudo` para instalação dos serviços systemd e cópia de arquivos para o `DEST_DIR`
-- Shell Bash
-
----
-
-## 💡 Dicas
-
-- Experimente diferentes temas para encontrar o que mais agrada
-- O tema `god-purple` foi projetado especialmente para uma experiência moderna com tons de roxo e preto
-- Execute `journalctl -u fcc@$USER -f` para acompanhar os logs do serviço principal em tempo real após a instalação
-- Execute `journalctl -u fcc-proxy@$USER -f` para acompanhar os logs do serviço proxy em tempo real após a instalação
-- Execute o script novamente a qualquer momento para trocar de tema ou idioma — as existentes serão detectadas e reinstaladas automaticamente
-- Use `--uninstall` para remover tudo e voltar ao estado original
-
----
-
-## 🔍 Observações Técnicas
-
-- **Instância por usuário via systemd template**: Cada usuário do sistema tem sua própria isolada instância do serviço, garantindo segurança e independência
-- **Proxy roda antes do runtime principal**: O serviço de proxy atua como middleware, processando requisições antes que cheguem ao runtime do Free Claude Code
-- **Tradução dinâmica via JSON locales**: Arquivos JSON em `lang/dynamic/locales/` permitem atualização de traduções sem reiniciar serviços
-- **Arquitetura totalmente desacoplada**: Nenhum componente modifica diretamente o core do Free Claude Code, facilitando atualizações futuras
-- **Sem modificação do core do Claude Code**: Todas as personalizações ocorrem em camadas externas (temas, proxy, preservando a integridade do sistema base)
-
----
-
-## 🧠 Design
-
-- **Zero patch no core**: Nenhuma alteração é feita no código-fonte original do Free Claude Code
-- **Proxy-first architecture**: O proxy é a primeira camada a receber requisições, permitindo intervenção antes do processamento principal
-- **Multi-user safe runtime**: Utiliza templates do systemd com instância por usuário (`fcc@$USER`) para isolamento completo entre usuários
-- **Hot-swappable themes**: Temas podem ser trocados em tempo real simplesmente executando o script novamente
-- **Locale injection via middleware**: O proxy injeta dinamicamente os locales nas respostas HTTP, permitindo atualização instantânea de traduções
-
----
-
-## 🗑️ Desinstalação
-
-```bash
-./fcc-personalizer.sh --uninstall
-```
-Remove:
-
-```
-fcc@.service
-fcc-proxy@.service
-~/.fcc/*
-aliases bash
-restore tema default
-restore idioma default
-```
-
 ## 📄 Licença
 
 Este projeto está licenciado sob a **MIT License**.
@@ -415,7 +309,7 @@ Este projeto está licenciado sob a **MIT License**.
 
 ## 👤 Autor
 
-Desenvolvido por [Roberto Godoy](https://github.com/godoyrw)  
+Desenvolvido por [Roberto Godoy](https://github.com/godoyrw)
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0003--2100--4772-green.svg)](https://orcid.org/0009-0003-2100-4772)
 
 ##### Versão: v1.0.0
