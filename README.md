@@ -3,6 +3,7 @@
 </p>
 
 <p align="center">
+
    [![Free Claude Code](https://img.shields.io/badge/Free_Claude_Code-Repository-blue?logo=github)](https://github.com/Alishahryar1/free-claude-code)
    [![Themes](https://img.shields.io/badge/Themes-14-blueviolet)](#-temas-disponíveis)
    [![GitHub stars](https://img.shields.io/github/stars/godoyrw/free-claude-code-personalizer?style=social)](https://github.com/godoyrw/free-claude-code-personalizer/stargazers)
@@ -10,6 +11,7 @@
    [![GitHub last commit](https://img.shields.io/github/last-commit/godoyrw/free-claude-code-personalizer)](https://github.com/godoyrw/free-claude-code-personalizer/commits/main)
    [![systemd](https://img.shields.io/badge/Init-systemd-informational)](https://systemd.io/)
    [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://systemd.io/)
+   
 </p>
 
 # Free Claude Code - Personalizer
