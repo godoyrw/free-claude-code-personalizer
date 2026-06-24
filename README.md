@@ -165,6 +165,68 @@ graph TD
 
 ---
 
+## ⚙️ Fluxo de Execução
+
+```
+fcc-personalizer.sh
+        │
+        ├── Seleciona Tema
+        ├── Instala Tema
+        ├── Seleciona Idioma
+        ├── Instala Idioma
+        ├── Instala Proxy
+        ├── Inicia fcc-proxy@.service
+        ├── Instala fcc@.service
+        ├── Inicia FCC runtime
+        └── Instala aliases CLI
+```
+
+### Versão mais detalhada, refletindo melhor o que o script realmente faz:
+
+Fluxo de Execução: O fcc-personalizer.sh inicia solicitando ao usuário a escolha do tema e do idioma, aplicando os arquivos correspondentes na interface administrativa do Free Claude Code. Em seguida, instala o proxy de tradução dinâmica (fcc_proxy.py) e copia os locales para o diretório ~/.fcc, preparando o ambiente para personalizações em tempo de execução.
+
+Depois disso, o script instala e inicia os serviços fcc-proxy@.service e fcc@.service, valida se ambos estão ativos e, por fim, configura os aliases CLI (fcc-start, fcc-stop, fcc-status, etc.) no ~/.bashrc. O resultado é um Free Claude Code totalmente personalizado, traduzido e gerenciado automaticamente pelo systemd, sem necessidade de manter o terminal aberto.
+
+```mermaid
+flowchart TD
+
+    START([Início])
+
+    START --> THEME_SELECT[Seleciona Tema]
+    THEME_SELECT --> THEME_INSTALL[Instala admin.css]
+
+    THEME_INSTALL --> LANG_SELECT[Seleciona Idioma]
+    LANG_SELECT --> LANG_INSTALL[Instala arquivos estáticos]
+
+    LANG_INSTALL --> PROXY_COPY[Copia fcc_proxy.py]
+    PROXY_COPY --> LOCALES_COPY[Copia locales dinâmicos]
+
+    LOCALES_COPY --> PROXY_SERVICE[Instala fcc-proxy@.service]
+    PROXY_SERVICE --> PROXY_START[Inicia Proxy]
+
+    PROXY_START --> FCC_SERVICE[Instala fcc@.service]
+    FCC_SERVICE --> FCC_START[Inicia Runtime FCC]
+
+    FCC_START --> ALIASES[Instala Aliases CLI]
+
+    ALIASES --> VALIDATE[Valida Serviços]
+    VALIDATE --> END([Instalação Concluída])
+
+    subgraph Proxy
+        PROXY_COPY
+        LOCALES_COPY
+        PROXY_SERVICE
+        PROXY_START
+    end
+
+    subgraph Runtime
+        FCC_SERVICE
+        FCC_START
+    end
+
+```
+---
+
 ## 🚀 Como Usar
 
 1. **Certifique-se de que o Free Claude Code está instalado** no seu sistema
