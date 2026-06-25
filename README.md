@@ -17,8 +17,6 @@
 
 Este projeto permite personalizar a interface de administração do (<a href="https://github.com/Alishahryar1/free-claude-code" target="_blank">Free Claude Code</a>) com diferentes temas visuais, instalar o serviço systemd, adicionar aliases de comando e configurar um proxy para tradução dinâmica.
 
-#### Versão: v1.0.0
-
 ---
 
 ## 📋 Visão Geral
@@ -372,8 +370,8 @@ Este projeto está licenciado sob a **MIT License**.
 
 ## 👤 Autor
 
-Desenvolvido por [Roberto Godoy](https://github.com/godoyrw)
+Desenvolvido por [Roberto Godoy](https://github.com/godoyrw)<br/>
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0003--2100--4772-green.svg)](https://orcid.org/0009-0003-2100-4772)
 
-##### Versão: v1.0.0
+##### Versão: v1.0.1
 ---
